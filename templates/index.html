@@ -4,7 +4,16 @@
 </head>
 <body>
     <h1>Parrot</h1>
-    <h3>A markov chain text bot by Griffin Brome</h3>
-    <h4>https://github.com/Griffin-Brome</h4>
+    <form action="/upload-file" method="POST" enctype="multipart/form-data">
+        Upload file: <input type="file" name="file">
+        <button type="submit" class="btn btn-primary">Upload</button>
+        <!--TODO add currently loaded file-->
+    </form>
 </body>
+<footer>
+    <address>
+        <p>Written by Griffin Brome</p>
+        <p>https://github.com/Griffin-Brome</p>
+    </address>
+</footer>
 </html>

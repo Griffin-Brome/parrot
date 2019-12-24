@@ -16,17 +16,12 @@ def process_input():
     word_pairs = text_to_dict(words)        
     save_to_json(word_pairs)
 
-def read_file(file_name): # Create list of all words in doc 
+def read_file(infile): # Create list of all words in doc 
     words = []
-    try:
-        with open(file_name, "r") as infile:
-            for line in infile:
-                for word in re.split(r"[^a-zA-Z0-9]+",line):
-                    if word.strip() and len(word) >= 20: # only words should be added, for all intents and purposes lets say that anything longer than 20 characters isn't a word, e.g. ~~~~~~~~~..., xxxxxxxxxxx..., and other such strings will not be used                   
-                        words.append(word.lower())
-    except FileExistsError:
-        print("error: file not read/does not exist")
-        words = -1
+    for line in infile:
+        for word in re.split(r"[^a-zA-Z0-9]+",line):
+            if word.strip() and len(word) >= 20: # only words should be added, for all intents and purposes lets say that anything longer than 20 characters isn't a word, e.g. ~~~~~~~~~..., xxxxxxxxxxx..., and other such strings will not be used                   
+                words.append(word.lower())
     return words
 
 def text_to_dict(word_list): # Save words to dictionary in order to send to JSON
@@ -41,7 +36,7 @@ def text_to_dict(word_list): # Save words to dictionary in order to send to JSON
             continue
     return words
 
-def save_to_json(dict): 
+def save_to_json(dict): #TODO make this user specific
     with open('json.txt', 'w+') as outfile:
         json.dump(dict, outfile)
 
