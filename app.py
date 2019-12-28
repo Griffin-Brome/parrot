@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'PppZt00xEdHalhWKkb_Lpw' # secrets.token_urlsafe(16)
 
-@app.route('/index')
+@app.route('/')
 def index():
     return render_template('index.html')
 
@@ -23,23 +23,23 @@ def upload_file():
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
-            return redirect('/index')
+            return redirect('/')
         file = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
             flash('No selected file')
-            return redirect('/index')
+            return redirect('/')
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
             flash('File successfully uploaded')
             session['current_file'] = filename
-            return redirect('/index')
+            return redirect('/')
         else:
             flash('Filetype not supported')
-            return redirect('/index') 
+            return redirect('/') 
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -48,8 +48,15 @@ def allowed_file(filename):
 
 @app.route('/text')
 def text_output(filename):
-    #I'm abusing the dynamic typing a bit here, 
-    #this could be one line, but that would be cumbersome
-    parrot.process_input(filename) 
-    paragraph = parrot.gen_paragraph()
-    return render_template('text.html', paragraph=paragraph)
+    #TODO
+    #-------------------------------------------------------------------------------------------
+    # 1. Send the uploaded file to parrot
+    # 2. Retrieve generated paragraph
+    # 3. Render generated paragraph using jinja 2
+    # 4. Repeat this is the user wants 
+    # 5. If session is over: delete uploaded file and json from disk and clear session variables
+    '''
+    For later: this might be usefull for getting rid of files after we are done w/ them 
+    https://stackoverflow.com/questions/24612366/delete-an-uploaded-file-after-downloading-it-from-flask
+    '''
+    pass
