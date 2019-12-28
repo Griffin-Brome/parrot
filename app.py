@@ -3,7 +3,7 @@ import os
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/var/www/uploads'
+UPLOAD_FOLDER = './var/www/uploads'
 ALLOWED_EXTENSIONS = {'txt'} # I might try to implement other filetypes in the future
 
 app = Flask(__name__)
@@ -31,8 +31,9 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file', filename=filename))
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(path)
+            return redirect(url_for('text_output', filename=path))
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -40,10 +41,10 @@ def allowed_file(filename):
 
 
 @app.route('/text')
-def text_output():
+def text_output(filename):
     #I'm abusing the dynamic typing a bit here, 
     #this could be one line, but that would be cumbersome
-    words = parrot.read_file('/var/www/uploads/uploaded_file.txt')
+    words = parrot.read_file(filename)
     words = parrot.text_to_dict(words)
     parrot.save_to_json(words)
 
