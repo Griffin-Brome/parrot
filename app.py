@@ -1,6 +1,6 @@
 import parrot
 import os
-from flask import Flask, flash, request, redirect, url_for, render_template
+from flask import Flask, flash, request, redirect, url_for, render_template, session
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = './var/www/uploads'
@@ -8,6 +8,7 @@ ALLOWED_EXTENSIONS = {'txt'} # I might try to implement other filetypes in the f
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SECRET_KEY'] = 'PppZt00xEdHalhWKkb_Lpw' # secrets.token_urlsafe(16)
 
 @app.route('/index')
 def index():
@@ -22,18 +23,23 @@ def upload_file():
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
-            return redirect(request.url)
+            return redirect('/index')
         file = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
             flash('No selected file')
-            return redirect(request.url)
+            return redirect('/index')
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
-            return redirect(url_for('text_output', filename=path))
+            flash('File successfully uploaded')
+            session['current_file'] = filename
+            return redirect('/index')
+        else:
+            flash('Filetype not supported')
+            return redirect('/index') 
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -44,9 +50,6 @@ def allowed_file(filename):
 def text_output(filename):
     #I'm abusing the dynamic typing a bit here, 
     #this could be one line, but that would be cumbersome
-    words = parrot.read_file(filename)
-    words = parrot.text_to_dict(words)
-    parrot.save_to_json(words)
-
+    parrot.process_input(filename) 
     paragraph = parrot.gen_paragraph()
     return render_template('text.html', paragraph=paragraph)

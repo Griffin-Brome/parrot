@@ -7,8 +7,20 @@
     <form action="/upload-file" method="POST" enctype="multipart/form-data">
         Upload file: <input type="file" name="file">
         <button type="submit" class="btn btn-primary">Upload</button>
-        <!--TODO add currently loaded file-->
+        <br>
+        <strong>Currently loaded file:</strong> {{ session['current_file'] }} 
     </form>
+    <font color='blue'>
+      <p>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+      </p>
+    </font>
 </body>
 <footer>
     <address>

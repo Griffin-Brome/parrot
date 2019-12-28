@@ -10,16 +10,15 @@ import re
 import json
 import random
 
-def process_input():
-    file_name = input("Enter a file name: ")
-    words = read_file(file_name)
+def process_input(filename):
+    words = read_file(filename)
     word_pairs = text_to_dict(words)        
     save_to_json(word_pairs)
 
-def read_file(file_name): # Create list of all words in doc 
+def read_file(filename): # Create list of all words in doc 
     words = []
     try:
-        with open(file_name, "r") as infile:
+        with open(filename, "r") as infile:
             for line in infile:
                 for word in re.split(r"[^a-zA-Z0-9]+",line):
                     if word.strip(): # only words should be added                   
@@ -42,13 +41,13 @@ def text_to_dict(word_list): # Save words to dictionary in order to send to JSON
     return words
 
 def save_to_json(dict): #TODO make this specific to last uploaded file
-    with open('json.txt', 'w+') as outfile:
+    with open('./var/www/json.txt', 'w+') as outfile:
         json.dump(dict, outfile)
 
 def gen_sentence(num_words=10):  
     sentence = ''
     try:
-        with open('json.txt', 'r') as infile:
+        with open('./var/www/json.txt', 'r') as infile:
             words = json.load(infile)
     except FileNotFoundError:
         print("Error: File not found, have you uploaded a .txt file?")
