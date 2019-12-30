@@ -10,9 +10,6 @@
         <br>
         <strong>Currently loaded file:</strong> {{ session['current_file'] }} 
     </form>
-    <form action="/text">
-      <button type="submit" class="btn btn-primary">Generate paragraph</button>
-    </form>
     <font color='blue'>
       <p>
           {% with messages = get_flashed_messages() %}

@@ -18,10 +18,7 @@ def index():
 # http://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/#uploading-files
 
 @app.route('/upload-file', methods=['GET', 'POST']) 
-def upload_file():
-    # Clear out www/uploads of any pre existing files
-
-
+def upload_file(): 
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -50,7 +47,16 @@ def allowed_file(filename):
 
 
 @app.route('/text')
-def text_output():
-    parrot.process_input(session['current_file'])
-    session['paragraph'] = parrot.gen_paragraph() # lets use a session variable 
-    render_template('text.html')
+def text_output(filename):
+    #TODO
+    #-------------------------------------------------------------------------------------------
+    # 1. Send the uploaded file to parrot
+    # 2. Retrieve generated paragraph
+    # 3. Render generated paragraph using jinja 2
+    # 4. Repeat this is the user wants 
+    # 5. If session is over: delete uploaded file and json from disk and clear session variables
+    '''
+    For later: this might be usefull for getting rid of files after we are done w/ them 
+    https://stackoverflow.com/questions/24612366/delete-an-uploaded-file-after-downloading-it-from-flask
+    '''
+    pass
