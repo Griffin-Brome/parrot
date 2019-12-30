@@ -4,7 +4,8 @@
 </head>
 <body>
     <!--This is where we will print out the randomly generated text-->
-    <p>{{ paragraph }}</p>
+    <p>{{ session['paragraph'] }}</p>
+    <form action="/text" method="get"> New Paragraph</form>
 </body>
 <footer>
         <address>
