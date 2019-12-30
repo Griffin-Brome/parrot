@@ -21,7 +21,7 @@ def read_file(filename): # Create list of all words in doc
         with open(filename, "r") as infile:
             for line in infile:
                 for word in re.split(r"[^a-zA-Z0-9]+",line):
-                    if word.strip(): # only words should be added                   
+                    if word.strip() and len(word) <= 50: # only words should be added                   
                         words.append(word.lower())
     except Exception as e:
         #print("error: file not read/does not exist")
@@ -50,7 +50,7 @@ def gen_sentence(num_words=10):
         with open('./var/www/json.txt', 'r') as infile:
             words = json.load(infile)
     except FileNotFoundError:
-        print("Error: File not found, have you uploaded a .txt file?")
+        return("Error: File not found, have you uploaded a .txt file?")
     
     rand_key = get_rand_key(list(words.keys()))
     
@@ -67,7 +67,7 @@ def gen_sentence(num_words=10):
     return sentence + '.'
 
 def get_rand_key(key_list): 
-    rand = random.randint(0, len(key_list))
+    rand = random.randint(0, len(key_list)-1)
     return key_list[rand]
 
 def gen_paragraph(length=10): 

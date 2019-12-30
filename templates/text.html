@@ -4,7 +4,11 @@
 </head>
 <body>
     <!--This is where we will print out the randomly generated text-->
-    <p>{{ paragraph }}</p>
+    <p>{{ session['paragraph'] }}</p>
+    <br>
+    <form action="/text"> <!--This should generate a new paragraph and reload this page-->
+        <button type="submit" class="btn btn-primary">paragraph</button> 
+    </form>
 </body>
 <footer>
         <address>
