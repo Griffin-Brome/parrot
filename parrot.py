@@ -18,17 +18,18 @@ def process_input(filename):
 def read_file(filename): # Create list of all words in doc 
     words = []
     try:
-        with open(filename, "r") as infile:
+        with open(filename,'r') as infile:
             for line in infile:
-                for word in re.split(r"[^a-zA-Z0-9]+",line):
-                    if word.strip() and len(word) <= 50: # only words should be added                   
+                for word in re.split(r'[^a-zA-Z0-9]+',line):
+                    # only words should be added
+                    if word.strip() and len(word) <= 50:                    
                         words.append(word.lower())
     except Exception as e:
-        #print("error: file not read/does not exist")
         print(e)
     return words
 
-def text_to_dict(word_list): # Save words to dictionary in order to send to JSON
+# Save words to dictionary in order to send to JSON
+def text_to_dict(word_list): 
     words = {}
     for i, word in enumerate(word_list):
         if word not in words:
@@ -40,17 +41,17 @@ def text_to_dict(word_list): # Save words to dictionary in order to send to JSON
             continue
     return words
 
-def save_to_json(dict): #TODO make this specific to last uploaded file
-    with open('./var/www/json.txt', 'w+') as outfile:
+def save_to_json(dict): 
+    with open('./var/www/json.txt','w+') as outfile:
         json.dump(dict, outfile)
 
 def gen_sentence(num_words=10):  
     sentence = ''
     try:
-        with open('./var/www/json.txt', 'r') as infile:
+        with open('./var/www/json.txt','r') as infile:
             words = json.load(infile)
     except FileNotFoundError:
-        return("Error: File not found, have you uploaded a .txt file?")
+        return('Error: File not found, have you uploaded a .txt file?')
     
     rand_key = get_rand_key(list(words.keys()))
     
@@ -58,7 +59,7 @@ def gen_sentence(num_words=10):
         if i == 0: # first word should be capitalized
             sentence = rand_key.capitalize()
         else:
-            sentence = sentence + " " + rand_key
+            sentence = sentence + ' ' + rand_key
         if len(words[rand_key]) == 0:
             rand_key = get_rand_key(list(words.keys()))
         else:
@@ -67,14 +68,14 @@ def gen_sentence(num_words=10):
     return sentence + '.'
 
 def get_rand_key(key_list): 
-    rand = random.randint(0, len(key_list)-1)
+    rand = random.randint(0,len(key_list)-1)
     return key_list[rand]
 
 def gen_paragraph(length=10): 
     paragraphs = ""
     for j in range(length):
         if j == 0:
-            paragraphs = "  "+ gen_sentence() + " "
+            paragraphs = '  ' + gen_sentence() + ' '
         else:    
-            paragraphs = paragraphs + gen_sentence() + " "
+            paragraphs = paragraphs + gen_sentence() + ' '
     return paragraphs
