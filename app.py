@@ -20,7 +20,8 @@ def index():
 @app.route('/upload-file', methods=['GET', 'POST']) 
 def upload_file():
     # Clear out www/uploads of any pre existing files
-
+    if len(os.listdir(app.config['UPLOAD_FOLDER'])) > 0:
+        purge_uploads()
 
     if request.method == 'POST':
         # check if the post request has the file part
@@ -53,4 +54,11 @@ def allowed_file(filename):
 def text_output():
     parrot.process_input(session['current_file'])
     session['paragraph'] = parrot.gen_paragraph() # lets use a session variable 
-    render_template('text.html')
+    return render_template('text.html')
+
+def purge_uploads():
+    for item in os.scandir(app.config['UPLOAD_FOLDER']):
+        try:
+            os.remove(item)
+        except FileNotFoundError:
+            continue
