@@ -24,10 +24,10 @@ def upload_file():
         purge_uploads()
 
     if request.method == 'POST':
-        if 'file' not in request.files:
+        if 'userFile' not in request.files:
             flash('No file part')
             return redirect('/')
-        file = request.files['file']
+        file = request.files['userFile']
 
         if file.filename == '':
             flash('No selected file')
