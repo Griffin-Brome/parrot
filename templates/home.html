@@ -23,7 +23,7 @@
         </div>
         <label for="userFile">Choose a file</label>
         <div class="row">
-            <div class="col-md-2 col-lg-offset-4"> <!--Thank you so much, AviS https://stackoverflow.com/a/52471799-->
+            <div class="col-md-2 col-lg-offset-4"> <!--Big thanks to AviS https://stackoverflow.com/a/52471799-->
                 <form class="center-block" action="/upload-file" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="file" class="form-control-file flex" id="userFile">
@@ -34,14 +34,14 @@
             </div>
             </form>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <strong>Currently loaded file:</strong> {{ session['current_file'] }} 
             <div class='blue'>
                 <p>
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
                             {% for message in messages %}
-                                <li>{{ message }}</li>
+                                {{ message }}
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
