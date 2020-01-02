@@ -1,5 +1,5 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}Parrot: your very own echo chamber{% endblock %}
+{% block title %}Parrot{% endblock %}
     
 {% block navbar %}
     <div class="navbar navbar-fixed-top">
@@ -8,31 +8,33 @@
 {% endblock %}
     
 {% block content %}
-    <div class="text-center">
+    <div class="text-left">
+        <div class="jumbotron jumbotron-fluid">
             <h1>Parrot</h1>
             <h3>Your very own echo chamber</h3>
-                    <form action="/upload-file" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="userFile">Choose a file</label>
-                            <input type="file" class="form-control-file" id="userFile">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Upload</button>
-                    </form>
-                    <strong>Currently loaded file:</strong> {{ session['current_file'] }} 
-                    <form action="/text">
-                        <button type="submit" class="btn btn-primary">Generate paragraph</button> 
-                    </form>
-            <div class='blue'>
-                <p>
-                    {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    {% for message in messages %}
-                    <li>{{ message }}</li>
-                    {% endfor %}
-                    {% endif %}
-                    {% endwith %}
-                </p>
+        </div>
+        <form action="/upload-file" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="userFile">Choose a file</label>
+                <input type="file" class="form-control-file text-center" id="userFile">
             </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <strong>Currently loaded file:</strong> {{ session['current_file'] }} 
+        <form action="/text">
+            <button type="submit" class="btn btn-primary">Generate paragraph</button> 
+        </form>
+        <div class='blue'>
+            <p>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </p>
+        </div>
     </div>
         <footer class="page-footer font-small blue">
             <div class="footer-copyright text-center py-3">Written by Griffin Brome
