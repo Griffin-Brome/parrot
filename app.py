@@ -50,7 +50,7 @@ def allowed_file(filename):
 
 @app.route('/text')
 def text_output():
-    parrot.process_input(session['current_file'])
+    parrot.process_input(os.path.join(app.config['UPLOAD_FOLDER'], session['current_file']))
     session['paragraph'] = parrot.gen_paragraph()  
     return render_template('text.html')
 
