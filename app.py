@@ -53,7 +53,6 @@ def text_output():
     parrot.process_input(os.path.join(app.config['UPLOAD_FOLDER'], session['current_file']))
     session['paragraph'] = parrot.gen_paragraph()  
     return render_template('text.html')
-
 def purge_uploads():
     for item in os.scandir(app.config['UPLOAD_FOLDER']):
         try:
