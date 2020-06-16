@@ -1,30 +1,3 @@
-'''
-                         .
-                           | \/|
-   (\   _                  ) )|/|
-       (/            _----. /.'.'
- .-._________..      .' @ _\  .'
- '.._______.   '.   /    (_| .')
-   '._____.  /   '-/      | _.'
-    '.______ (         ) ) \
-      '..____ '._       )  )
-         .' __.--\  , ,  // ((
-         '.'  mrf|  \/   (_.'(
-                 '   \ .'
-                  \   (
-                   \   '.
-                    \ \ '.)
-                     '-'-'
-
-_____      ____________ _____ _____     
-| ___ \____ | ___ \ ___ \  _  |_   _|
-| |_/ / __ \| |_/ / |_/ / |/' | | |  
-|  __/ / _` |    /|    /|  /| | | |  
-| | | | (_| | |\ \| |\ \\ |_/ / | |  
-\_|  \ \__,_\_| \_\_| \_|\___/  \_/  
-      \____/                    
- Griffin Brome 2019
- '''
 import re
 import json
 import random
@@ -32,9 +5,11 @@ import random
 def process_input(filename):
     words = read_file(filename)
     word_pairs = text_to_dict(words)        
-    save_to_json(word_pairs)
+    with open('./var/www/json.txt','w+') as outfile:
+        json.dump(word_pairs, outfile)
 
-def read_file(filename): # Create list of all words in doc 
+def read_file(filename): 
+    """Create list of all words in doc from a file."""
     words = []
     try:
         with open(filename,'r') as infile:
@@ -47,8 +22,13 @@ def read_file(filename): # Create list of all words in doc
         print(e)
     return words
 
-# Save words to dictionary in order to send to JSON
 def text_to_dict(word_list): 
+    """
+    Save words to dictionary.
+
+    Each key/value pair in the dictionary is composed of a word and any words
+    that immediately succeed it.
+    """
     words = {}
     for i, word in enumerate(word_list):
         if word not in words:
@@ -60,11 +40,15 @@ def text_to_dict(word_list):
             continue
     return words
 
-def save_to_json(dict): 
-    with open('./var/www/json.txt','w+') as outfile:
-        json.dump(dict, outfile)
-
 def gen_sentence(num_words=10):  
+    """
+    Populate a sentence using data from the JSON file
+
+    For num_words iterations, fetch a random key from the dictionary, append it
+    to the sentence, then fetch a random key from its associated list and
+    append it as well. Then fetch a random key its associated list, and so on
+    and so forth
+    """
     sentence = ''
     try:
         with open('./var/www/json.txt','r') as infile:
@@ -72,7 +56,7 @@ def gen_sentence(num_words=10):
     except FileNotFoundError:
         return('Error: File not found, have you uploaded a .txt file?')
     
-    rand_key = get_rand_key(list(words.keys()))
+    rand_key = random.choice(words.keys()))
     
     for i in range(num_words):
         if i == 0: # first word should be capitalized
@@ -80,17 +64,14 @@ def gen_sentence(num_words=10):
         else:
             sentence = sentence + ' ' + rand_key
         if len(words[rand_key]) == 0:
-            rand_key = get_rand_key(list(words.keys()))
+            rand_key = random.choice(list(words.keys()))
         else:
             rand = random.randint(0,len(words[rand_key])-1)
             rand_key = words[rand_key][rand]
     return sentence + '.'
 
-def get_rand_key(key_list): 
-    rand = random.randint(0,len(key_list)-1)
-    return key_list[rand]
-
 def gen_paragraph(length=10): 
+    """Generate n paragraphs, using gen_sentence."""
     paragraphs = ""
     for j in range(length):
         if j == 0:
@@ -98,3 +79,6 @@ def gen_paragraph(length=10):
         else:    
             paragraphs = paragraphs + gen_sentence() + ' '
     return paragraphs
+
+if __name__ == "__main__":
+   pass 
