@@ -1,6 +1,7 @@
 import re
 import json
 import random
+import argparse
 
 def process_input(filename):
     words = read_file(filename)
@@ -56,7 +57,7 @@ def gen_sentence(num_words=10):
     except FileNotFoundError:
         return('Error: File not found, have you uploaded a .txt file?')
     
-    rand_key = random.choice(words.keys()))
+    rand_key = random.choice(words.keys())
     
     for i in range(num_words):
         if i == 0: # first word should be capitalized
@@ -81,4 +82,5 @@ def gen_paragraph(length=10):
     return paragraphs
 
 if __name__ == "__main__":
-   pass 
+    parser = argparse.ArgumentParser()
+    parser.parse_args()
