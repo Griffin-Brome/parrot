@@ -17,4 +17,6 @@ build/
 
 .venv/
 
-.swp
+*.swp
+
+

@@ -3,12 +3,6 @@ import json
 import random
 import argparse
 
-def process_input(filename):
-    words = read_file(filename)
-    word_pairs = text_to_dict(words)        
-    with open('./var/www/json.txt','w+') as outfile:
-        json.dump(word_pairs, outfile)
-
 def read_file(filename): 
     """Create list of all words in doc from a file."""
     words = []
@@ -39,7 +33,8 @@ def text_to_dict(word_list):
                 words[word].append(word_list[i+1])
         except:
             continue
-    return words
+    with open('./var/www/json.txt','w+') as outfile:
+        json.dump(words, outfile)
 
 def gen_sentence(num_words=10):  
     """
