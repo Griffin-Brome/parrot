@@ -80,7 +80,3 @@ def gen_paragraph(length=10):
         else:    
             paragraphs = paragraphs + gen_sentence() + ' '
     return paragraphs
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.parse_args()
